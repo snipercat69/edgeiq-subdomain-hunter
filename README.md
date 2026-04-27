@@ -1,87 +1,55 @@
-# 🏹 EdgeIQ Subdomain Hunter
+# Subdomain Hunter — CLI Setup
 
-**Passive subdomain enumeration via Certificate Transparency logs, DNS checks, and takeover detection.**
-
-Reconnaissance-grade discovery without sending active probes. Passive subdomain enumeration for security assessment reconnaissance.
-
-[![Project Stage](https://img.shields.io/badge/Stage-Beta-blue)](https://edgeiqlabs.com)
-[![Python](https://img.shields.io/badge/Python-3.8+-green)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-orange)](LICENSE)
-
----
-
-## What It Does
-
-Enumerates subdomains passively using Certificate Transparency logs (crt.sh), DNS zone transfer checks, common subdomain wordlist brute-forcing, and takeover detection (identifying subdomains pointing to unclaimed services).
-
-> ⚠️ **Legal Notice:** Only enumerate domains you own or have explicit written permission to audit.
-
----
-
-## Key Features
-
-- **Certificate Transparency enumeration** — scrape crt.sh for subdomain history
-- **DNS zone transfer check** — attempt AXFR with common NS records
-- **Takeover detection** — identify subdomains pointing to inactive services
-- **Common subdomain bruteforce** — lightweight wordlist scan
-- **Subdomain resolution** — verify discovered subdomains resolve
-- **JSON export** — structured output for integration
-
----
+A standalone subdomain enumeration and takeover detection tool. No Discord required.
 
 ## Prerequisites
 
 - Python 3.8+
-- **Pure stdlib** — no external dependencies
-
----
+- `python-whois` (optional, for WHOIS lookups)
 
 ## Installation
 
 ```bash
+# Clone the tool
 git clone https://github.com/snipercat69/edgeiq-subdomain-hunter.git
 cd edgeiq-subdomain-hunter
-# No pip install needed!
-```
 
----
+# Install dependencies (optional — only needed for WHOIS)
+pip install python-whois
+```
 
 ## Quick Start
 
 ```bash
-# Enumerate subdomains for a domain
+# Free scan (50 CT results, no bruteforce, no takeover)
 python3 subdomain_hunter.py --domain example.com
 
-# Include takeover detection
-python3 subdomain_hunter.py --domain example.com --check-takeover
+# Pro scan (unlimited CT, takeover detection)
+EDGEIQ_EMAIL=your_email@gmail.com python3 subdomain_hunter.py --domain example.com --pro
 
-# Export as JSON
-python3 subdomain_hunter.py --domain example.com --output subdomains.json
+# Bundle scan (bruteforce, more threads, full wordlist)
+EDGEIQ_EMAIL=your_email@gmail.com python3 subdomain_hunter.py --domain example.com --bundle --bruteforce
+
+# Export to JSON
+python3 subdomain_hunter.py --domain example.com --pro --output report.json
 ```
 
----
+## Features
 
-## Pricing
+- Certificate Transparency enumeration (crt.sh)
+- DNS zone transfer check (AXFR attempt)
+- Subdomain takeover detection (CNAME scanning)
+- Common subdomain bruteforce
+- JSON export for integrations
+- Threaded resolution for speed
 
-| Tier | Price | Features |
-|------|-------|----------|
-| **Free** | $0 | 50 results, basic wordlist |
-| **Pro** | $19/mo | Unlimited results, takeover detection, larger wordlist |
-| **Lifetime** | $39 one-time | All Pro features, forever |
+## Licensing
 
----
+Free tier: limited CT results, no bruteforce, no takeover detection.
 
-## Integration with EdgeIQ Tools
+Pro ($19/mo) or Bundle ($39/mo): [buy.stripe.com/7sYaEZeCn5934nW8AE7wA01](https://buy.stripe.com/7sYaEZeCn5934nW8AE7wA01)
 
-- **[EdgeIQ Network Scanner](https://github.com/snipercat69/edgeiq-network-scanner)** — scan discovered subdomains
-- **[EdgeIQ SSL Watcher](https://github.com/snipercat69/edgeiq-ssl-watcher)** — monitor TLS on discovered subdomains
-
----
-
-## Support
-
-Open an issue at: https://github.com/snipercat69/edgeiq-subdomain-hunter/issues
-
----
-
-*Part of EdgeIQ Labs — [edgeiqlabs.com](https://edgeiqlabs.com)*
+After purchase, save your license key to `~/.edgeiq/license.key` or set your email:
+```bash
+export EDGEIQ_EMAIL=your@email.com
+```
